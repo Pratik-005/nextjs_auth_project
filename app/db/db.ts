@@ -7,11 +7,11 @@ export async function connectToDB() {
         const connection = mongoose.connection;
 
         connection.on('connected', () => {
-            console.log('CONNECTED TO DB');
+            console.log('Successfully connected to the database');
         });
 
         connection.on('error', () => {
-            console.log('ERROR COONECTIONG TO DB');
+            console.log('Error connecting to the database');
             process.exit();
         });
 

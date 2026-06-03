@@ -2,11 +2,6 @@ import mongoose from 'mongoose';
 import { unique } from 'next/dist/build/utils';
 
 const userSchema = new mongoose.Schema({
-    username: {
-        required: true,
-        unique: [true, 'Please provide a username'],
-        type: String
-    },
     email: {
         required: true,
         unique: [true, 'Please provide a email'],
@@ -24,7 +19,7 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     forgotPasswordTokenExpiry: {
-        
+
         type: Date
     },
     verifyToken: {

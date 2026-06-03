@@ -2,13 +2,15 @@ import User from "@/app/models/userModel";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import { sendEmail } from "@/app/utils/mailer";
+import { connectToDB } from "@/app/db/db";
 
+
+connectToDB();
 
 export async function POST(
     req: NextRequest
 ) {
 
-    
 
     try {
 

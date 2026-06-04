@@ -1,5 +1,5 @@
-import { connectToDB } from "@/app/db/db";
-import User from "@/app/models/userModel";
+import { connectToDB } from "@/db/db";
+import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 
 connectToDB();

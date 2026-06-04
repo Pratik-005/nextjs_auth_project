@@ -1,8 +1,8 @@
-import User from "@/app/models/userModel";
+import User from "@/models/userModel";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
-import { sendEmail } from "@/app/utils/mailer";
-import { connectToDB } from "@/app/db/db";
+import { sendEmail } from "@/utils/mailer";
+import { connectToDB } from "@/db/db";
 
 
 connectToDB();

@@ -1,4 +1,4 @@
-import User from "@/app/models/userModel";
+import User from "@/models/userModel";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken';
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
             email: user.email
         }
 
-        const token = await jwt.sign(data, process.env.JWT_SECRET, { expiresIn: '1hr' });
+        const token = await jwt.sign(data, process.env.JWT_SECRET!, { expiresIn: '1hr' });
 
 
         const res = NextResponse.json(

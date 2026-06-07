@@ -1,38 +1,40 @@
 'use client';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 
 const SignupPage = () => {
 
     const router = useRouter();
-
-    const [user, setUser] = useState({
-        email: '',
-        password: ''
-    })
+    const [user, setUser] = useState({ email: '', password: '' });
 
     const [disabled, setDisabled] = useState(true);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (user.email.trim().length < 0 && user.password.trim().length < 0) {
-            setDisabled(true)
+        if (user.email.trim().length === 0 || user.password.trim().length === 0) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
         }
-        setDisabled(false);
     }, [user]);
 
 
-    const singup = async (e: React.FormEvent<HTMLFormElement>) => {
+    const singup = async (e: React.MouseEvent<HTMLButtonElement>) => {
         try {
             e.preventDefault();
             setLoading(true);
+            setDisabled(true);
             const res = await axios.post('/api/users/signup', user);
+            toast.success(res.data.message);
             router.push('/login');
-        } catch (error) {
-
+        } catch (error: any) {
+            toast.error(error.response.data.error);
         } finally {
             setLoading(false);
+            setDisabled(false);
         }
     }
 
@@ -44,7 +46,8 @@ const SignupPage = () => {
                     Sign Up
                 </h1>
 
-                <form className="space-y-5" onSubmit={singup}>
+                <form className="space-y-5" >
+
                     <div>
                         <label
                             htmlFor="email"
@@ -57,6 +60,7 @@ const SignupPage = () => {
                             type="email"
                             placeholder="Enter your email"
                             className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onChange={(e) => setUser({ ...user, email: e.target.value })}
                         />
                     </div>
 
@@ -72,16 +76,20 @@ const SignupPage = () => {
                             type="password"
                             placeholder="Enter your password"
                             className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onChange={(e) => setUser({ ...user, password: e.target.value })}
                         />
                     </div>
 
                     <button
+                        onClick={singup}
                         disabled={disabled}
                         type="submit"
-                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 transition rounded-lg font-semibold text-white"
-                    >
-                        Submit
+                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 transition rounded-lg font-semibold text-white
+                        disabled:cursor-not-allowed disabled:opacity-50">
+                        {loading ? 'Loading ...' : 'Submit'}
                     </button>
+
+                    <p className='text-center text-white' ><span>Already have an account ?</span>  <Link className='text-blue-400' href='/login' ><span>Login</span></Link></p>
                 </form>
             </div>
         </div>

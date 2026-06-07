@@ -8,10 +8,12 @@ export async function GET(req: NextRequest) {
             status: 200
         });
 
-        return response.cookies.set('token', '', {
+        response.cookies.set('token', '', {
             httpOnly: true,
             expires: new Date(0)
         });
+
+        return response;
 
     } catch (error: any) {
         return NextResponse.json({

@@ -2,13 +2,10 @@ import nodemailer from 'nodemailer';
 import User from '../models/userModel';
 import bcrypt from 'bcryptjs';
 
-export async function sendEmail({
-    email, emailType, userId
-}) {
+export async function sendEmail({ email, emailType, userId }) {
     try {
 
         const token = await bcrypt.hash(userId.toString(), 10);
-
 
         if (emailType == 'VERIFY') {
             await User.findByIdAndUpdate(userId, {
@@ -26,17 +23,27 @@ export async function sendEmail({
             })
         }
 
+        // var transporter = nodemailer.createTransport({
+        //     host: "live.smtp.mailtrap.io",
+        //     port: 587,
+        //     auth: {
+        //         user: "api",
+        //         pass: process.env.MAIL_TRAP_API_KEY
+        //     }
+        // });
+
         var transporter = nodemailer.createTransport({
-            host: "live.smtp.mailtrap.io",
-            port: 587,
+            host: "sandbox.smtp.mailtrap.io",
+            port: 2525,
             auth: {
-                user: "api",
-                pass: process.env.MAIL_TRAP_API_KEY
+                user: "63f9eeaf0437a0",
+                pass: "ea2492f334fa7d"
             }
         });
 
+
         const mailOptions = {
-            from: '"Example Team" <team@example.com>', // sender address
+            from: 'hello@demomailtrap.co', // sender address
             to: email, // list of recipients
             subject: emailType === 'VERIFY' ? 'Verify your email' : 'Reset your password', // subject line
             html: `<p>Click <a href="${process.env.BASE_URL}/verifyemail?token=${token}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}
